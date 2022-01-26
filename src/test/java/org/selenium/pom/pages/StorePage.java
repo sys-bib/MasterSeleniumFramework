@@ -2,6 +2,7 @@ package org.selenium.pom.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.selenium.pom.base.BasePage;
 
 public class StorePage extends BasePage {
@@ -16,23 +17,27 @@ public class StorePage extends BasePage {
     }
 
     public StorePage enterTextInSearchField(String txt){
-        driver.findElement(searchField).sendKeys(txt);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(searchField)).sendKeys(txt);
+        //driver.findElement(searchField).sendKeys(txt);
         return this;
     }
 
     public StorePage search(String txt){
-        driver.findElement(searchField).sendKeys(txt);
-        driver.findElement(searchButton).click();
+        enterTextInSearchField(txt).clickSearchBtn();
+        //driver.findElement(searchField).sendKeys(txt);
+        //driver.findElement(searchButton).click();
         return this;
     }
 
     public StorePage clickSearchBtn(){
-        driver.findElement(searchButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
+        //driver.findElement(searchButton).click();
         return this;
     }
 
     public String getTitle(){
-       return driver.findElement(title).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(title)).getText();
+        //return driver.findElement(title).getText();
     }
 
     private By getAddToCartBtnElement(String productName){
@@ -46,7 +51,7 @@ public class StorePage extends BasePage {
     }
 
     public CartPage clickViewCart(){
-        driver.findElement(viewCartLink).click();
+        wait.until(ExpectedConditions.elementToBeClickable(viewCartLink)).click();
         return new CartPage(driver);
     }
 
