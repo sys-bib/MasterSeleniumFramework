@@ -1,4 +1,4 @@
-package org.selenium;
+package org.selenium.pom.tests;
 
 import org.openqa.selenium.By;
 import org.selenium.pom.base.BaseTest;
@@ -20,18 +20,6 @@ public class MyFirstTestCase extends BaseTest {
 
     @Test
     public void guestCheckoutUsingDirectBankTransfer() throws IOException {
-        /*System.setProperty("webdriver.chrome.driver","C:\\Users\\USER\\Documents\\automation\\software\\chromedriver.exe");
-        driver.get("https://askomdch.com");
-        BillingAddress billingAddress = new BillingAddress().
-        setFirstname("demo").
-        setLastname("user").
-        setAddressLineOne("San Fransisco").
-        setCity("San Fransisco").
-        setPostalCode("94188").
-        setEmail("askomdch@gmail.com");
-        BillingAddress billingAddress = new BillingAddress("demo","user","San Fransisco",
-                "San Fransisco", "94188","askomdch@gmail.com"); */
-
         String searchFor = "Blue";
         BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
         Product product = new Product(1215);
@@ -55,7 +43,7 @@ public class MyFirstTestCase extends BaseTest {
         Assert.assertEquals(cartPage.getProductName(),product.getName());
         CheckoutPage checkoutPage =  cartPage.
                 checkout().
-                                            //enterFirstName("demo").enterLastName("user").enterAddress("San Fransisco").enterCity("San Fransisco").enterPostCode("94188").enterEmail("askomdch@gmail.com").
+                selectDirectBankTransfer().
                 setBillingAddress(billingAddress).
                 placeOrder();
 //        Thread.sleep(3000);
@@ -87,6 +75,7 @@ public class MyFirstTestCase extends BaseTest {
         checkoutPage.
                 login(user).
                 setBillingAddress(billingAddress).
+                selectDirectBankTransfer().
                 placeOrder();
 //        Thread.sleep(3000);
         Assert.assertEquals(checkoutPage.getNotice(), "Thank you. Your order has been received.");

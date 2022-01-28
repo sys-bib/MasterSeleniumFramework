@@ -1,10 +1,13 @@
 package org.selenium.pom.pages;
 
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.selenium.pom.base.BasePage;
 import org.selenium.pom.objects.BillingAddress;
@@ -28,6 +31,13 @@ public class CheckoutPage extends BasePage {
     private final By successNotice  = By.cssSelector(".woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received");
     private final By overlay =  By.cssSelector(".blockUI.blockOverlay"); //digunakan jika terjadi element click interception exception
 
+    private final By countryDropDown = By.id("billing_country");
+    private final By alternateCountryDropDown = By.id("select2-billing_country-container");
+    private final By alternateStateDropDown = By.id("select2-billing_state-container");
+    private final By stateDropDown = By.id("billing_state");
+
+    private final By directBankTransferRadioBtn = By.id("payment_method_bacs");
+
     public CheckoutPage(WebDriver driver) {
         super(driver);
     }
@@ -48,6 +58,17 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
+    public CheckoutPage selectCountry(String countryName){
+        /*Select select = new Select(wait.until(ExpectedConditions.elementToBeClickable(countryDropDown)));
+        //Select select = new Select(driver.findElement(countryDropDown));
+        select.selectByVisibleText(countryName);*/
+        wait.until(ExpectedConditions.elementToBeClickable(alternateCountryDropDown)).click();
+        WebElement e = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[text()='"+ countryName +"']")));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", e);
+        e.click();
+        return this;
+    }
+
     public CheckoutPage enterAddress(String address){
         WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(addresFld));
         e.clear();
@@ -59,6 +80,16 @@ public class CheckoutPage extends BasePage {
         WebElement e = wait.until(ExpectedConditions.visibilityOfElementLocated(cityFld));
         e.clear();
         e.sendKeys(city);
+        return this;
+    }
+
+    public CheckoutPage selectState(String stateName){
+        /*Select select = new Select(driver.findElement(stateDropDown));
+        select.selectByVisibleText(stateName);*/
+        wait.until(ExpectedConditions.elementToBeClickable(alternateStateDropDown)).click();
+        WebElement e = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[text()='"+ stateName +"']")));
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", e);
+        e.click();
         return this;
     }
 
@@ -108,18 +139,29 @@ public class CheckoutPage extends BasePage {
                clickLoginBtn();
     }
 
+    public CheckoutPage selectDirectBankTransfer(){
+        WebElement e = wait.until(ExpectedConditions.elementToBeClickable(directBankTransferRadioBtn));
+        if(!e.isSelected()){
+            e.click();
+        }
+        return this;
+    }
+
     public CheckoutPage setBillingAddress(BillingAddress billingAddress){
         return  enterFirstName(billingAddress.getFirstName()).
                 enterLastName(billingAddress.getLastName()).
+                selectCountry(billingAddress.getCountry()).
                 enterAddress(billingAddress.getAddressLineOne()).
                 enterCity(billingAddress.getCity()).
+                selectState(billingAddress.getState()).
                 enterPostCode(billingAddress.getPostalCode()).
                 enterEmail(billingAddress.getEmail());
     }
 
     public CheckoutPage placeOrder(){
         waitForOverlaysToDisappear(overlay); //Jika terjadi element click interception exception
-        driver.findElement(placeOrderBtn).click();
+        wait.until(ExpectedConditions.elementToBeClickable(placeOrderBtn)).click();
+        //driver.findElement(placeOrderBtn).click();
         return this;
     }
 
