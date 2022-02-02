@@ -3,9 +3,9 @@ package org.selenium.pom.base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.selenium.pom.utils.ConfigLoader;
 
 import java.time.Duration;
 import java.util.List;
@@ -20,7 +20,7 @@ public class BasePage {
     }
 
     public void load(String endPoint){
-        driver.get("https://askomdch.com"+ endPoint);
+        driver.get(ConfigLoader.getInstance().getBaseUrl() + endPoint);
     }
 
     public void waitForOverlaysToDisappear(By overlay) {

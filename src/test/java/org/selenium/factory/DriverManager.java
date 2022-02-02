@@ -5,12 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.time.Duration;
-
 public class DriverManager {
-    public WebDriver initializeDriver(){
+    public WebDriver initializeDriver(String browser){
         WebDriver driver;
-        String browser = System.getProperty("browser","Firefox");
         switch (browser) {
             case "Chrome" -> {
                 WebDriverManager.chromedriver().cachePath("Drivers").setup();
