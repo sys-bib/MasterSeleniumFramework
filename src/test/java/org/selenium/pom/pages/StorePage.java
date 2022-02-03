@@ -22,6 +22,11 @@ public class StorePage extends BasePage {
         return this;
     }
 
+    public StorePage load(){
+        load("/store");
+        return this;
+    }
+
     public StorePage search(String txt){
         enterTextInSearchField(txt).clickSearchBtn();
         //driver.findElement(searchField).sendKeys(txt);
