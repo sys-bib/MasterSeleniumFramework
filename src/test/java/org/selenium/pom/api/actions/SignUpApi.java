@@ -71,7 +71,7 @@ public class SignUpApi {
                         cookies(cookies).
                         log().all().
                         when().
-                get("/account").
+                post("/account").
                         then().
                         log().all().
                         extract().

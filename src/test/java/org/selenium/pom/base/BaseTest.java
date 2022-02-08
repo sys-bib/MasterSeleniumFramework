@@ -1,43 +1,66 @@
 package org.selenium.pom.base;
 
 
-import org.junit.After;
-import org.junit.Before;
+import io.restassured.http.Cookies;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import org.selenium.factory.DriverManager;
+import org.selenium.factory.DriverManagerFactory;
+import org.selenium.factory.DriverManagerOriginal;
+import org.selenium.factory.abstractFactory.DriverManagerAbstract;
+import org.selenium.factory.abstractFactory.DriverManagerFactoryAbstract;
+import org.selenium.pom.constants.DriverType;
+import org.selenium.pom.utils.CookieUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import java.util.List;
+
 public class BaseTest {
     private ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    //protected WebDriver driver;
-
-
     private void setDriver(WebDriver driver){
         this.driver.set(driver);
     }
-
     protected WebDriver getDriver(){
         return this.driver.get();
+    }
+
+    private ThreadLocal<DriverManagerAbstract> driverManager = new ThreadLocal<>();
+
+    private void setDriverManager(DriverManagerAbstract driverManager){
+        this.driverManager.set(driverManager);
+    }
+    protected DriverManagerAbstract getDriverManager(){
+        return this.driverManager.get();
     }
 
     //This using TestNG
     @Parameters("browser")
     @BeforeMethod
-    public void startDriver(@Optional String browser){
-        //browser = System.getProperty("browser", browser);
-        if(browser == null) browser = "Chrome";
-        setDriver(new DriverManager().initializeDriver(browser));
+    public synchronized void startDriver(@Optional String browser){
+        browser = System.getProperty("browser", browser);
+        //if(browser == null) browser = "Chrome";
+        //setDriver(new DriverManagerOriginal().initializeDriver(browser));
+        //setDriver(DriverManagerFactory.getManager(DriverType.valueOf(browser)).createDriver()); *using instance
+        setDriverManager(DriverManagerFactoryAbstract.getManager(DriverType.valueOf(browser)));
+        setDriver(getDriverManager().getDriver());
         System.out.println("CURRENT THREAD: "+Thread.currentThread().getId() + ", " + "Driver = " + getDriver());
     }
 
     @AfterMethod
-    public void quitDriver()throws InterruptedException{
-        Thread.sleep(100);
+    public synchronized void quitDriver()throws InterruptedException{
+        Thread.sleep(300);
         System.out.println("CURRENT THREAD: "+Thread.currentThread().getId() + ", " + "Driver = " + getDriver());
-        getDriver().quit();
+        //getDriver().quit();
+        getDriverManager().getDriver().quit();
+    }
+
+    public void injectCookieToBrowser(Cookies cookies){
+        List<Cookie> seleniumCookies = new CookieUtils().convertRestAssuredCookiesToSeleniumCookies(cookies);
+        for(Cookie cookie: seleniumCookies){
+            getDriver().manage().addCookie(cookie);
+        }
     }
 
     /*

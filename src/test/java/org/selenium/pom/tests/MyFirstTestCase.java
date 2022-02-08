@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class MyFirstTestCase extends BaseTest {
 
-    @Test //Using TestNG
+    //@Test //Using TestNG
     //@Test *Using JUnit4
     //@org.junit.jupiter.api.Test *Using JUnit5
     public void guestCheckoutUsingDirectBankTransfer() throws IOException {
@@ -25,9 +25,8 @@ public class MyFirstTestCase extends BaseTest {
         BillingAddress billingAddress = JacksonUtils.deserializeJson("myBillingAddress.json", BillingAddress.class);
         Product product = new Product(1215);
 
-        StorePage storePage = new HomePage(getDriver()).
-                load().
-                navigateToStoreUsingMenu().
+        StorePage storePage = new HomePage(getDriver()).load().
+                getMyHeader().navigateToStoreUsingMenu().
                 search(searchFor);
 
                                             /*        StorePage storePage = homePage.navigateToStoreUsingMenu();
@@ -40,9 +39,9 @@ public class MyFirstTestCase extends BaseTest {
         Assert.assertEquals(storePage.getTitle(),"Search results: “"+ searchFor +"”"); //TestNG
         //Assertions.assertEquals("Search results: “"+ searchFor +"”", storePage.getTitle()); //JUnit
 
-        storePage.clickAddToCartBtn(product.getName());
+        storePage.getProductThumbnail().clickAddToCartBtn(product.getName());
 //        Thread.sleep(3000);
-        CartPage cartPage = storePage.clickViewCart();
+        CartPage cartPage = storePage.getProductThumbnail().clickViewCart();
         Assert.assertEquals(cartPage.getProductName(),product.getName()); //TestNG
         //Assertions.assertEquals(product.getName(), cartPage.getProductName()); //JUnit
         CheckoutPage checkoutPage =  cartPage.
@@ -56,7 +55,7 @@ public class MyFirstTestCase extends BaseTest {
 
     }
 
-    @Test //Using TestNG
+    //@Test //Using TestNG
     //@Test *Using JUnit4
     //@Test *Using JUnit5
     public void loginAndCheckoutUsingDirectBankTransfer() throws IOException {
@@ -68,15 +67,15 @@ public class MyFirstTestCase extends BaseTest {
 
         StorePage storePage = new HomePage(getDriver()).
                 load().
-                navigateToStoreUsingMenu().
+                getMyHeader().navigateToStoreUsingMenu().
                 search(searchFor);
 
         Assert.assertEquals(storePage.getTitle(),"Search results: “"+ searchFor +"”");
         //Assertions.assertEquals("Search results: “"+ searchFor +"”", storePage.getTitle()); //JUnit
 
-        storePage.clickAddToCartBtn(product.getName());
+        storePage.getProductThumbnail().clickAddToCartBtn(product.getName());
 //        Thread.sleep(3000);
-        CartPage cartPage = storePage.clickViewCart();
+        CartPage cartPage = storePage.getProductThumbnail().clickViewCart();
         Assert.assertEquals(cartPage.getProductName(),product.getName());
         //Assertions.assertEquals(product.getName(), cartPage.getProductName()); //JUnit
 

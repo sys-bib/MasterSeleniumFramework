@@ -10,9 +10,8 @@ public class NavigationTest extends BaseTest {
 
    @Test
     public void NavigateFromHomeToStoreUsingMainMenu(){
-        StorePage storePage = new HomePage(getDriver()).
-                load().
-                navigateToStoreUsingMenu();
+        StorePage storePage = new HomePage(getDriver()).load().
+                getMyHeader().navigateToStoreUsingMenu();
         Assert.assertEquals(storePage.getTitle(),"Store"); //TestNG
     }
 }

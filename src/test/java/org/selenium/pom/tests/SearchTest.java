@@ -7,10 +7,9 @@ import org.testng.annotations.Test;
 
 public class SearchTest extends BaseTest {
     @Test
-    public void searchWithPartialMatch(){
+    public void searchWithPartialMatch() throws InterruptedException {
         String searchFor = "Blue";
-        StorePage storePage = new StorePage(getDriver())
-                .load().
+        StorePage storePage = new StorePage(getDriver()).load().
                 search(searchFor);
         Assert.assertEquals(storePage.getTitle(),"Search results: “"+ searchFor +"”"); //TestNG
     }

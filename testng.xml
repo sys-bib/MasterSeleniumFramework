@@ -1,17 +1,17 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
 <suite name="Suite1" verbose="1" thread-count="2">
-    <test name="with Chrome" thread-count="2"  parallel="methods">
+    <test name="with Chrome" thread-count="6"  parallel="methods">
         <parameter name="browser" value="Chrome"></parameter>
-        <classes>
-            <class name="org.selenium.pom.tests.MyFirstTestCase" />
-        </classes>
+        <packages>
+            <package name="org.selenium.pom.tests" />
+        </packages>
     </test>
 
-    <test name="with Firefox" thread-count="2" parallel="methods">
-        <parameter name="browser" value="Firefox"></parameter>
-        <classes>
-            <class name="org.selenium.pom.tests.MyFirstTestCase" />
-        </classes>
-    </test>
+<!--    <test name="with Firefox" thread-count="2" parallel="methods">-->
+<!--        <parameter name="browser" value="Firefox"></parameter>-->
+<!--        <classes>-->
+<!--            <class name="org.selenium.pom.tests.MyFirstTestCase" />-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>
