@@ -2,10 +2,14 @@
 
 <suite name="Suite1" verbose="1" thread-count="2">
     <test name="with Chrome" thread-count="6"  parallel="methods">
-        <parameter name="browser" value="Chrome"></parameter>
-        <packages>
-            <package name="org.selenium.pom.tests" />
-        </packages>
+        <parameter name="browser" value="Chrome"/>
+        <classes>
+            <class name="org.selenium.pom.tests.AddToCartTest" >
+            <methods>
+                <include name="addToCartFromStorePage"></include>
+            </methods>
+        </class>
+        </classes>
     </test>
 
 <!--    <test name="with Firefox" thread-count="2" parallel="methods">-->
