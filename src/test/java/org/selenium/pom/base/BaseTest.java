@@ -60,17 +60,19 @@ public class BaseTest {
 
     @Parameters("browser")
     @AfterMethod
-    public synchronized void quitDriver(@Optional String browser, ITestResult result) throws InterruptedException, IOException {
+    public synchronized void quitDriver() throws InterruptedException, IOException {
         Thread.sleep(300);
         System.out.println("CURRENT THREAD: "+Thread.currentThread().getId() + ", " + "Driver = " + getDriver());
         //getDriver().quit();
-        if(result.getStatus() == ITestResult.FAILURE){
+
+        /*if(result.getStatus() == ITestResult.FAILURE){
             File destFile = new File("scr" + File.separator + browser + File.separator +
                     result.getTestClass().getRealClass().getSimpleName() + "_" +
                     result.getMethod().getMethodName() + ".png");
             //takeScreenshot(destFile);
             takeScreenshotUsingAShot(destFile);
-        }
+        }*/
+
         getDriverManager().getDriver().quit();
     }
 
@@ -81,13 +83,13 @@ public class BaseTest {
         }
     }
 
-    private void takeScreenshot(File destFile) throws IOException {
+    /*private void takeScreenshot(File destFile) throws IOException {
         TakesScreenshot takesScreenshot = (TakesScreenshot) getDriver();
         File srcFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(srcFile, destFile);
-    }
+    }*/
 
-    private void takeScreenshotUsingAShot(File destFile){
+    /*private void takeScreenshotUsingAShot(File destFile){
         Screenshot screenshot = new AShot()
                 .shootingStrategy(ShootingStrategies.viewportPasting(100))
                 .takeScreenshot(getDriver());
@@ -97,7 +99,8 @@ public class BaseTest {
             e.printStackTrace();
         }
 
-    }
+    }*/
+
     /*
     //This Using JUnit
     //@Before *JUnit4
